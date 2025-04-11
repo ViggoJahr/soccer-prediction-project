@@ -50,7 +50,7 @@ This project aims to predict the outcome of soccer matches (Home Win, Draw, Away
 
 ## 7. Contributing / Team Members
 - **Team Members:**
-  - Viggo Jahr (GitHub handle: [@AUsername](https://githost.kth.se/AUsername))
+  - Viggo Jahr (GitHub handle: [@amjpg](https://githost.kth.se/AUsername))
   - Axel Prander (GitHub handle: [@BUsername](https://githost.kth.se/BUsername))
 
 ## 8. Project Management
