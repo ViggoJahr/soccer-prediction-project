@@ -1,3 +1,8 @@
 # ── 1.  Ignore *everything* in data/raw, interim and external ──────────
 data/raw/**
-
+# Ignore large dataset files
+data/football_ml_dataset.csv
+data/*.csv
+# Ignore visualization outputs (optional, if you don’t want to track them)
+data/visualizations/*.png
+data/visualizations/
