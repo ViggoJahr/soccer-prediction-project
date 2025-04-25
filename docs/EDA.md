@@ -1,9 +1,4 @@
-## 1. How to open the Notebook.
-
-xxxxx
-xxxxx
-
-## 2. What have been found after running the EDA: Notebook 
+# 1. What have been found using the [EDA_Notebook](EDA_notebook_dataunderstanding) 
 
 ### 2.1 dataUnderstanding section 
 

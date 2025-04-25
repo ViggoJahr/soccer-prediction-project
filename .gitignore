@@ -1,5 +1,5 @@
-# ── 1.  Ignore *everything* in data/raw, interim and external ──────────
-data/raw/**
+# Ignore the database.sqlite
+*.sqlite
 # Ignore large dataset files
 data/football_ml_dataset.csv
 data/*.csv

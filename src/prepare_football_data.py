@@ -5,12 +5,14 @@ from datetime import datetime
 import time
 import matplotlib.pyplot as plt
 from collections import deque
+from pathlib import Path
+
 
 # Start timer
 start_time = time.time()
 
 # Connect to the database
-db_path = '/Users/axelprander/soccer-prediction-project/data/database.sqlite'
+db_path = Path(__file__).resolve().parents[1] / "data" / "database.sqlite" # works aslong as the database.sqlite is unzipped in the data-folder.
 conn = sqlite3.connect(db_path)
 print("Connected to database successfully!")
 
@@ -406,7 +408,8 @@ df_final = matches[final_cols]
 matches = matches.drop_duplicates(subset='id')
 
 # Save to CSV
-df_final.to_csv('/Users/axelprander/soccer-prediction-project/data/football_ml_dataset.csv', index=False)
+csv_path = db_path.parent / "football_ml_dataset.csv"
+df_final.to_csv(csv_path, index=False)
 print(f"\nDataset saved to football_ml_dataset.csv with {len(df_final)} matches")
 print("\nSample data (first 5 rows):")
 print(df_final.head())
