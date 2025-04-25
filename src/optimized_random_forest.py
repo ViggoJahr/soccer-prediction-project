@@ -10,12 +10,13 @@ from sklearn.calibration import calibration_curve
 from pathlib import Path
 
 # Set up output directory for visualizations
-output_dir = Path('/Users/axelprander/soccer-prediction-project/data/visualizations')
+output_dir = Path(__file__).resolve().parents[1] / "data" / "visualizations" 
 output_dir.mkdir(exist_ok=True)
 
-# Load dataset
+# Load dataset from relative path
+dataset_path = Path(__file__).resolve().parents[1] / "data" / "football_ml_dataset.csv"
 try:
-    df = pd.read_csv('/Users/axelprander/soccer-prediction-project/data/football_ml_dataset.csv')
+    df = pd.read_csv(dataset_path)
     print(f"Loaded dataset with {len(df)} matches")
 except Exception as e:
     print(f"Error loading dataset: {e}")
@@ -222,7 +223,9 @@ try:
         'Actual': y_test,
         'Predicted': y_pred
     })
-    results.to_csv('/Users/axelprander/soccer-prediction-project/data/predictions.csv', index=False)
+    
+    dataprediction_path = Path(__file__).resolve().parents[1] / "data" / "predictions.csv"
+    results.to_csv(dataprediction_path, index=False)
     print("\nPredictions saved to predictions.csv")
 except Exception as e:
     print(f"Error saving predictions: {e}")
