@@ -95,8 +95,8 @@ python src/optimized_random_forrest.py
 
 ## 7. Contributing / Team Members
 - **Team Members:**
-  - Viggo Jahr (GitHub handle: [@ViggoJahr](https://github.com/ViggoJahr))
-  - Axel Prander (GitHub handle: [@amjpg](https://github.com/amjpg))
+  - Viggo Jahr [@ViggoJahr](https://github.com/ViggoJahr)
+  - Axel Prander [@amjpg](https://github.com/amjpg)
 
 ## 8. Project Management
 - We use the GitHub Issue Tracker to manage tasks, bugs, and new features.
