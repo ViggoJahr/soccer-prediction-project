@@ -75,6 +75,8 @@ python src/prepare_football_data.py
 
 # Train & evaluate the model
 python src/optimized_random_forrest.py
+# or with the advanced model
+python src/boosted_random_forrest.py
 ```
 
 ### 6. Locate your results
