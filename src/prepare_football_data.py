@@ -76,7 +76,7 @@ print(f"Missing team IDs: {matches[['home_team_api_id', 'away_team_api_id']].isn
 matches['home_team_api_id'] = matches['home_team_api_id'].astype('Int64')
 matches['away_team_api_id'] = matches['away_team_api_id'].astype('Int64')
 
-# Drop rows with missing team IDs
+# Drop rows with missing team IDs - should not be any in the dataset.
 matches = matches.dropna(subset=['home_team_api_id', 'away_team_api_id'])
 print(f"Matches after dropping missing team IDs: {len(matches)}")
 
@@ -122,37 +122,44 @@ matches = matches.merge(league_stats, left_on='league_id', right_index=True, how
 # Compute high-stakes match
 matches['high_stakes'] = (matches['stage'] > 30).astype(int)
 
-# Impute missing Bet365 odds
-print("Imputing missing odds...")
+# Impute one odds column using the mean of the other.
+print("Computing median odds over all available bookmakers...")
 odds_time = time.time()
-bookmakers = ['BW', 'IW', 'PS', 'WH']
-for col, other_cols in [('B365H', [f'{bm}H' for bm in bookmakers]),
-                        ('B365D', [f'{bm}D' for bm in bookmakers]),
-                        ('B365A', [f'{bm}A' for bm in bookmakers])]:
-    mask = matches[col].isna()
-    matches.loc[mask, col] = matches.loc[mask, other_cols].mean(axis=1)
 
-# Fallback to league-specific means
-league_odds_means = matches.groupby('league_id')[['B365H', 'B365D', 'B365A']].mean()
-matches = matches.merge(league_odds_means, left_on='league_id', right_index=True, how='left', suffixes=('', '_league_mean'))
-matches['B365H'] = matches['B365H'].fillna(matches['B365H_league_mean'])
-matches['B365D'] = matches['B365D'].fillna(matches['B365D_league_mean'])
-matches['B365A'] = matches['B365A'].fillna(matches['B365A_league_mean'])
+# Define columns for each outcome from all bookmakers
+home_odds_cols = ['B365H', 'BWH', 'IWH', 'PSH', 'WHH']
+draw_odds_cols = ['B365D', 'BWD', 'IWD', 'PSD', 'WHD']
+away_odds_cols = ['B365A', 'BWA', 'IWA', 'PSA', 'WHA']
 
-# Final fallback to global means
-matches[['B365H', 'B365D', 'B365A']] = matches[['B365H', 'B365D', 'B365A']].fillna(matches[['B365H', 'B365D', 'B365A']].mean())
+# For each outcome, compute the median of all available odds and assign back to B365 columns
+matches['B365H'] = matches[home_odds_cols].median(axis=1, skipna=True)
+matches['B365D'] = matches[draw_odds_cols].median(axis=1, skipna=True)
+matches['B365A'] = matches[away_odds_cols].median(axis=1, skipna=True)
 
 # Cap extreme odds
 matches['B365H'] = matches['B365H'].clip(upper=30)
 matches['B365D'] = matches['B365D'].clip(upper=15)
 matches['B365A'] = matches['B365A'].clip(upper=30)
 
+# Fallback to league-specific means
+league_odds_means = matches.groupby('league_id')[['B365H', 'B365D', 'B365A']].mean()
+matches = matches.merge(league_odds_means, left_on='league_id', right_index=True, 
+                          how='left', suffixes=('', '_league_mean'))
+matches['B365H'] = matches['B365H'].fillna(matches['B365H_league_mean'])
+matches['B365D'] = matches['B365D'].fillna(matches['B365D_league_mean'])
+matches['B365A'] = matches['B365A'].fillna(matches['B365A_league_mean'])
+
+# Final fallback to global means
+matches[['B365H', 'B365D', 'B365A']] = matches[['B365H', 'B365D', 'B365A']].fillna(
+    matches[['B365H', 'B365D', 'B365A']].mean())
+
+# Remove the temporary league mean columns
 matches = matches.drop(columns=['B365H_league_mean', 'B365D_league_mean', 'B365A_league_mean'])
 
 print(f"Missing odds after imputation: {matches[['B365H', 'B365D', 'B365A']].isna().sum().to_dict()}")
-print(f"Imputed odds stats:\n{matches[['B365H', 'B365D', 'B365A']].describe()}")
+print(f"Median odds stats:\n{matches[['B365H', 'B365D', 'B365A']].describe()}")
 matches[['B365H', 'B365D', 'B365A']].hist(bins=50)
-print(f"Odds imputation time: {time.time() - odds_time:.2f} seconds")
+print(f"Odds computation time: {time.time() - odds_time:.2f} seconds")
 
 # Compute implied probabilities
 print("Computing implied probabilities...")
