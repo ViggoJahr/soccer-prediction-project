@@ -23,7 +23,7 @@ Our approach to building the prediction model followed a systematic process:
    - Started with a Random Forest model as our baseline
    - Implementation of model training and validation procedures
    - Performance evaluation using various metrics
-   - Future plans to implement XGBoost for comparison
+   - We implemented XGBoost for comparison
 
 ## 3. Results: Random forest
 
@@ -143,14 +143,14 @@ Compared to the Random Forest (Accuracy: 0.670, Log-loss: 0.836), XGBoost shows 
 
 ### 4.2 Error Distribution
 
-![XGBoost Confusion Matrix](data/visualizations/xgboost_confusion_matrix.png)
+![XGBoost Confusion Matrix](docs/results/XG-boost/xgboost_confusion_matrix.png)
 
 The confusion matrix confirms the improved performance, especially for Draws:
 *   Misclassifications are significantly reduced compared to Random Forest.
 *   While Home Wins are predicted most accurately (98% recall), Draws (84%) and Away Wins (96%) also show high recall rates.
 *   The "draw problem" observed with Random Forest is largely mitigated.
 
-![XGBoost Misclassification Distribution](data/visualizations/xgboost_misclassification_by_actual.png)
+![XGBoost Misclassification Distribution](docs/results/XG-boost/xgboost_misclassification_by_actual.png)
 
 This plot shows how misclassified matches are distributed. For example, when the actual outcome was a Draw, the incorrect predictions are split between Away Win and Home Win, but the overall number of such errors is much lower than with Random Forest.
 
@@ -158,23 +158,23 @@ This plot shows how misclassified matches are distributed. For example, when the
 
 #### 4.3.1 Calibration
 
-![XGBoost Calibration Plot](data/visualizations/xgboost_calibration.png)
+![XGBoost Calibration Plot](docs/results/XG-boost/xgboost_calibration.png)
 
 The calibration plot shows that the XGBoost model's predicted probabilities are well-calibrated for all three classes (Away Win, Draw, Home Win), closely following the diagonal line. This indicates that the predicted probabilities reliably reflect the true likelihood of the outcomes.
 
 #### 4.3.2 Confidence Analysis
 
-![XGBoost Prediction Probability Distribution](data/visualizations/xgboost_pred_prob_distribution.png)
+![XGBoost Prediction Probability Distribution](docs/results/XG-boost/xgboost_pred_prob_distribution.png)
 
 The distribution of maximum prediction probabilities shows a clear separation between correct and incorrect predictions. Correct predictions generally have much higher confidence scores (closer to 1.0), while incorrect predictions tend to have lower maximum probabilities. This suggests the model is often "aware" when it's less certain.
 
-![XGBoost Confidence vs Accuracy](data/visualizations/xgboost_confidence_accuracy.png)
+![XGBoost Confidence vs Accuracy](docs/results/XG-boost/xgboost_confidence_accuracy.png)
 
 This plot further confirms that higher prediction confidence (Max_Prob) correlates strongly with higher accuracy. The smoothed trend line shows a clear positive relationship.
 
 ### 4.4 Feature Importance
 
-![XGBoost Feature Importance](data/visualizations/xgboost_feature_importance.png)
+![XGBoost Feature Importance](docs/results/XG-boost/xgboost_feature_importance.png)
 
 Top 15 features driving the XGBoost model:
 1.  `away_prob_median`
@@ -197,7 +197,7 @@ Similar to Random Forest, Elo ratings (`home_elo`, `away_elo`, `elo_diff`, `elo_
 
 ### 4.5 Class-Specific Precision-Recall
 
-![XGBoost Precision-Recall Curves](data/visualizations/xgboost_precision_recall.png)
+![XGBoost Precision-Recall Curves](docs/results/XG-boost/xgboost_precision_recall.png)
 
 The Precision-Recall curves demonstrate strong performance for all classes:
 *   All three classes maintain high precision even at higher recall levels compared to the Random Forest model.
@@ -205,13 +205,13 @@ The Precision-Recall curves demonstrate strong performance for all classes:
 
 ### 4.6 Temporal Robustness
 
-![XGBoost Temporal Accuracy](data/visualizations/xgboost_temporal_accuracy.png)
+![XGBoost Temporal Accuracy](docs/results/XG-boost/xgboost_temporal_accuracy.png)
 
 The accuracy of the XGBoost model shows some variation over the years but does not exhibit the same pronounced downward trend observed with the Random Forest. Overall accuracy remains high across the time period (roughly between 0.92 and 0.95), suggesting better robustness against concept drift compared to the Random Forest.
 
 ### 4.7 Error Analysis by Elo Difference
 
-![XGBoost Elo Difference Boxplot](data/visualizations/xgboost_elo_diff_boxplot.png)
+![XGBoost Elo Difference Boxplot](docs/results/XG-boost/xgboost_elo_diff_boxplot.png)
 
 This boxplot shows the distribution of the Elo difference (Home Elo - Away Elo) for correct versus incorrect predictions. While there might be some overlap, incorrect predictions don't seem strongly concentrated at specific Elo differences, suggesting errors aren't solely driven by matches between closely rated teams.
 
