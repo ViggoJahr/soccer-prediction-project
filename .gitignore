@@ -4,3 +4,4 @@
 data/football_ml_dataset.csv
 data/*.csv
 # Ignore visualization outputs (optional, if you don’t want to track them)
+data/visualizations/*.png
