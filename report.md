@@ -54,18 +54,14 @@ min_samples_leaf   = 2
 
 ### 3.2 Error distribution
 **Key insight – Draws are the pain‑point**
-* 65 % of true draws are predicted as Away Wins
-* 35 % are predicted as Home Wins
-* < 1 % are predicted as draws
 
-This single class accounts for the majority of the macro‑recall deficit.
 
 ![Confusion matrix](docs/results/random_forest/random_forest_confusion_matrix.png)
 
 The matrix confirms the "draw problem":  
 * **352 / 1 319 (27 %)** draws are called **Away Win**; **195 / 1 319 (15 %)** become **Home Win**.  
 * Only **311** draws are caught correctly → recall = 0.24 (see Section 3.1).  
-Addressing this single class would lift macro‑recall by ~13 pp.
+
 
 ### 3.3 Probability quality  
 
